@@ -1,6 +1,8 @@
 #include "User.h"
 #include <string>
 #include <iostream>
+#include <conio.h>
+#include <vector>
 using namespace std;
 
 int User::getId()
@@ -18,7 +20,7 @@ bool User::getAdminStatus()
 	return isAdmin;
 }
 
-void User::retrieveUserData()
+void User::retrieveCurrentUserData()
 {
 	string query = "SELECT Username, FirstName, LastName, isAdmin, IdOfCreator, IdOfLastUserUpdate, DateOfCreation, DateOfLastChange FROM Users WHERE Id='" + to_string(id) + "'";
 	auto result = nanodbc::execute(conn, NANODBC_TEXT(query));
@@ -39,6 +41,8 @@ void User::retrieveUserData()
 
 void User::displayUserData()
 {
+	cout << "-----------------------------" << endl;
+	cout << endl;
 	cout << "User Id: " << id << endl;
 	cout << "Username: " << username << endl;
 	cout << "Full name: " << firstName + " " + lastName << endl;
@@ -47,4 +51,16 @@ void User::displayUserData()
 	cout << "Id of creator: " << idOfCreator << endl;
 	cout << "Date of last update: " << dateOfLastChange << endl;
 	cout << "Id of last update from user: " << idOfLastUserUpdate << endl;
+	cout << endl;
+	cout << "-----------------------------";
+	cout << endl;
+	cout << endl;
+}
+
+//To-do
+void User::retrieveAllUsers()
+{
+	string query = "SELECT Id FROM Users";
+	auto result = nanodbc::execute(conn, query);
+
 }
