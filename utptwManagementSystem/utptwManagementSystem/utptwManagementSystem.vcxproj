@@ -144,11 +144,13 @@
   <ItemGroup>
     <ClCompile Include="Login.cpp" />
     <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="User.cpp" />
     <ClCompile Include="utptwManagementSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Login.h" />
     <ClInclude Include="Menu.h" />
+    <ClInclude Include="User.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

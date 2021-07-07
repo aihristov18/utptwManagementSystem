@@ -3,5 +3,6 @@
 #include <string>
 
 bool validateUsernameAndPassword(nanodbc::connection conn, std::string username, std::string password);
-void getPassword(std::string& password);
-bool login(nanodbc::connection conn);
+int retrieveUserId(nanodbc::connection conn, std::string password);
+void passwordInput(std::string& password);
+bool login(nanodbc::connection conn, int& id);
