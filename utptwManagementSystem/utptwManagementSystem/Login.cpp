@@ -20,7 +20,7 @@ bool validateUsernameAndPassword(nanodbc::connection conn, string username, stri
     return false;
 }
 
-int retrieveUserId(nanodbc::connection conn, string password)
+int retrieveUserIdByPassword(nanodbc::connection conn, string password)
 {
     string query = "SELECT Id FROM Users WHERE Password='" + password + "'";
     auto result = nanodbc::execute(conn, NANODBC_TEXT(query));
@@ -28,15 +28,22 @@ int retrieveUserId(nanodbc::connection conn, string password)
     return result.get<int>(0);
 }
 
-//Rework
 void passwordInput(string& password)
 {
     char ch;
     do
     {
         ch = _getch();
-        password.push_back(ch);
-        if (ch != '\r') { _putch('*'); }
+        if (ch != '\r' and ch != char(8)) { _putch('*'); }
+        if (ch == char(8))
+        {
+            cout << char(8) << " " << char(8);
+            password.pop_back();
+        }
+        else
+        {
+            password.push_back(ch);
+        }
     } while (ch != '\r');
     password.pop_back();
 }
@@ -48,7 +55,6 @@ bool login(nanodbc::connection conn, int& id)
     {
         string username;
         string password;
-        int i = 0;
 
         cout << "Login: " << endl;
         cout << endl;
@@ -61,7 +67,7 @@ bool login(nanodbc::connection conn, int& id)
         if (validateUsernameAndPassword(conn, username, password))
         {
             cout << "Login successful!";
-            id = retrieveUserId(conn, password);
+            id = retrieveUserIdByPassword(conn, password);
             flag = false;
         }
         else

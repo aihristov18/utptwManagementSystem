@@ -1,4 +1,5 @@
 #include "User.h"
+#include <Windows.h>
 #include <string>
 #include <iostream>
 #include <conio.h>
@@ -15,18 +16,20 @@ string User::getUsername()
 	return username;
 }
 
-bool User::getAdminStatus()
+bool User::isAdministrator()
 {
 	return isAdmin;
 }
 
-void User::retrieveCurrentUserData()
+void User::retrieveUserById(int _id)
 {
-	string query = "SELECT Username, FirstName, LastName, isAdmin, IdOfCreator, IdOfLastUserUpdate, DateOfCreation, DateOfLastChange FROM Users WHERE Id='" + to_string(id) + "'";
+	string query = "SELECT Username, FirstName, LastName, isAdmin, IdOfCreator, IdOfLastUserUpdate, DateOfCreation, DateOfLastChange FROM Users WHERE Id='" + to_string(_id) + "'";
+
 	auto result = nanodbc::execute(conn, NANODBC_TEXT(query));
 
 	result.next();
 	
+	id = _id;
 	username = result.get<string>(0);
 	firstName = result.get<string>(1);
 	lastName = result.get<string>(2);
@@ -39,9 +42,28 @@ void User::retrieveCurrentUserData()
 	else { isAdmin = false; }
 }
 
+void User::createUser(string _username, string _password, string _firstName, string _lastName)
+{
+	nanodbc::statement createUser(conn);
+	nanodbc::prepare(createUser, "INSERT INTO Users (Username, Password, FirstName, LastName, IdOfCreator, DateOfLastChange, IdOfLastUserUpdate) VALUES (?, ?, ?, ?, ?, GETDATE(), ?)");
+
+	createUser.bind(0, _username.c_str());
+	createUser.bind(1, _password.c_str());
+	createUser.bind(2, _firstName.c_str());
+	createUser.bind(3, _lastName.c_str());
+	createUser.bind(4, &id);
+	createUser.bind(5, &id);
+
+	nanodbc::execute(createUser);
+}
+
+void deleteUserById(int _id)
+{
+
+}
+
 void User::displayUserData()
 {
-	cout << "-----------------------------" << endl;
 	cout << endl;
 	cout << "User Id: " << id << endl;
 	cout << "Username: " << username << endl;
@@ -54,13 +76,16 @@ void User::displayUserData()
 	cout << endl;
 	cout << "-----------------------------";
 	cout << endl;
-	cout << endl;
 }
 
-//To-do
-void User::retrieveAllUsers()
+void User::displayAllUsers()
 {
 	string query = "SELECT Id FROM Users";
-	auto result = nanodbc::execute(conn, query);
-
+	auto result = nanodbc::execute(conn, NANODBC_TEXT(query));
+	while (result.next())
+	{
+		User temp(conn);
+		temp.retrieveUserById(result.get<int>(0));
+		temp.displayUserData();
+	}
 }

@@ -9,7 +9,7 @@ using namespace std;
 bool runtime()
 {
     // Make connection to SQL database
-    auto const connstr = NANODBC_TEXT("Driver={ODBC Driver 17 for SQL Server};Server=(localdb)\\MSSQLLocalDB;Database=utptwManagementSystem;Trusted_Connection=yes;");
+    auto const connstr = NANODBC_TEXT("Driver={ODBC Driver 17 for SQL Server};Server=(localdb)\\MSSQLLocalDB;Database=utptwManagementSystem;Trusted_Connection=yes;MARS_Connection=Yes;");
     nanodbc::connection conn(connstr);
     int id;
 
@@ -20,8 +20,8 @@ bool runtime()
     Sleep(500);
     system("cls");
 
-    User current(conn, id);
-    current.retrieveCurrentUserData();
+    User current(conn);
+    current.retrieveUserById(id);
 
     cout << "Welcome back, " << current.getUsername() << endl;
     cout << endl;
@@ -32,7 +32,7 @@ bool runtime()
         cout << "Menu: " << endl;
         cout << endl;
 
-        if (current.getAdminStatus())
+        if (current.isAdministrator())
         {
             int choice;
             cout << "1. User Management Panel" << endl;

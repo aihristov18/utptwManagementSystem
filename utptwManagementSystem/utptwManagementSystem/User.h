@@ -5,22 +5,22 @@
 class User
 {
 public:
-	User(nanodbc::connection conn, int id)
+	User(nanodbc::connection conn)
 	{
 		this->conn = conn;
-		this->id = id;  
 	}
 
 	int getId();
 	std::string getUsername();
-	bool getAdminStatus();
-	void retrieveCurrentUserData();
+	bool isAdministrator();
+	void retrieveUserById(int _id);
+	void createUser(std::string _username, std::string _password, std::string _firstName, std::string _lastName);
+	void deleteUserById(int _id);
 	void displayUserData();
-	void retrieveAllUsers();
+	void displayAllUsers();
 private:
 	int id, idOfCreator, idOfLastUserUpdate;
 	std::string username, firstName, lastName, dateOfCreation, dateOfLastChange;
 	bool isAdmin;
 	nanodbc::connection conn;
 };
-
