@@ -31,7 +31,7 @@ void createUserMenu(User& current)
 		cout << endl;
 		cout << "Enter Y/N to proceed: "; cin >> ch;
 
-		if (ch == 'Y')
+		if (ch == 'Y' or ch == 'y')
 		{
 			cout << endl;
 			cout << "Pushing to database .. ";
@@ -42,7 +42,7 @@ void createUserMenu(User& current)
 			system("cls");
 			flag = false;
 		}
-		else if (ch == 'N')
+		else if (ch == 'N' or ch == 'n')
 		{
 			cout << endl;
 			cout << "Returning to User management menu ..";
@@ -51,6 +51,15 @@ void createUserMenu(User& current)
 			flag = false;
 		}
 	}
+}
+
+void deleteUserMenu(User& current)
+{
+	int id;
+	cout << endl;
+	cout << "Enter user Id to delete: "; cin >> id;
+	current.deleteUserById(id);
+	system("cls");
 }
 
 void userManagementMenu(User& current)
@@ -94,6 +103,9 @@ void userManagementMenu(User& current)
 		case 5:
 			break;
 		case 6:
+			system("cls");
+			cout << "Delete user menu:" << endl;
+			deleteUserMenu(current);
 			break;
 		case 0:
 			flag = false;

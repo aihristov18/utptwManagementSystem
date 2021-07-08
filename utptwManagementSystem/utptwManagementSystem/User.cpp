@@ -57,9 +57,17 @@ void User::createUser(string _username, string _password, string _firstName, str
 	nanodbc::execute(createUser);
 }
 
-void deleteUserById(int _id)
+void User::deleteUserById(int _id)
 {
+	nanodbc::statement deleteUser(conn);
+	nanodbc::prepare(deleteUser, R"(
+		DELETE
+		FROM Users
+		WHERE Id=?
+	)");
 
+	deleteUser.bind(0, &_id);
+	nanodbc::execute(deleteUser);
 }
 
 void User::displayUserData()
