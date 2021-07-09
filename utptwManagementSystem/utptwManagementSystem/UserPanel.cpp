@@ -58,8 +58,25 @@ void deleteUserMenu(User& current)
 	int id;
 	cout << endl;
 	cout << "Enter user Id to delete: "; cin >> id;
-	current.deleteUserById(id);
+	if (id == current.getId())
+	{
+		cout << endl;
+		cout << "You can't delete your own account!";
+		Sleep(600);
+	}
+	else
+	{
+		cout << endl;
+		current.deleteUserById(id);
+	}
 	system("cls");
+}
+
+void displayUserByIdMenu(User& current)
+{
+	int id;
+	cout << "Enter user Id: "; cin >> id;
+	current.displayUserById(id);
 }
 
 void userManagementMenu(User& current)
@@ -94,6 +111,8 @@ void userManagementMenu(User& current)
 			current.displayUserData();
 			break;
 		case 3:
+			system("cls");
+			displayUserByIdMenu(current);
 			break;
 		case 4:
 			system("cls");
