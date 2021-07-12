@@ -27,7 +27,7 @@ void User::retrieveUserById(int id)
 	nanodbc::prepare(retrieveUser, R"(
 		SELECT Username, FirstName, LastName, isAdmin, IdOfCreator, IdOfLastUserUpdate, DateOfCreation, DateOfLastChange 
 		FROM Users 
-		WHERE Id=?
+		WHERE Id=? AND isDeleted!=1
 	)");
 	retrieveUser.bind(0, &id);
 	auto result = nanodbc::execute(retrieveUser);
@@ -70,8 +70,8 @@ void User::deleteUserById(int id)
 {
 	nanodbc::statement deleteUser(conn);
 	nanodbc::prepare(deleteUser, R"(
-			DELETE
-			FROM Users
+			UPDATE Users
+			SET isDeleted=1
 			WHERE Id=?
 		)");
 	deleteUser.bind(0, &id);
@@ -122,7 +122,7 @@ void User::displayUserById(int id)
 
 void User::displayAllUsers()
 {
-	string query = "SELECT Id FROM Users";
+	string query = "SELECT Id FROM Users WHERE isDeleted!=1";
 	auto result = nanodbc::execute(conn, NANODBC_TEXT(query));
 	while (result.next())
 	{

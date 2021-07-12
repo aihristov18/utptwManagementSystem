@@ -182,7 +182,7 @@ void userManagementMenu(User& current)
 		}
 		catch (exception& e)
 		{
-			cerr << "Something went wrong!" << endl;
+			cerr << e.what() << endl;
 			cout << endl;
 		}
 	}

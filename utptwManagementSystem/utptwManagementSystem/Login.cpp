@@ -6,17 +6,21 @@ using namespace std;
 
 bool validateUsernameAndPassword(nanodbc::connection conn, string username, string password)
 {
-    auto result = nanodbc::execute(conn, NANODBC_TEXT("SELECT Username, Password FROM Users"));
-    string _username, _password;
+    nanodbc::statement validateUser(conn);
+    nanodbc::prepare(validateUser, R"(
+        SELECT Username, Password
+        FROM Users
+        WHERE Username=? AND Password=?
+    )");
 
-    while (result.next())
+    validateUser.bind(0, username.c_str());
+    validateUser.bind(1, password.c_str());
+
+    auto result = nanodbc::execute(validateUser);
+    if (result.next())
     {
-        _username = result.get<string>(0);
-        _password = result.get<string>(1);
-
-        if (_username == username and _password == password) { return true; }
+        return true;
     }
-
     return false;
 }
 
