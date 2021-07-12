@@ -78,6 +78,25 @@ void User::deleteUserById(int id)
 	nanodbc::execute(deleteUser);
 }
 
+void User::editUserById(int id, string username, string password, string firstName, string lastName)
+{
+	nanodbc::statement editUser(conn);
+	nanodbc::prepare(editUser, R"(
+		UPDATE Users
+		SET Username=?, Password=?, FirstName=?, LastName=?, IdOfLastUserUpdate=?, DateOfLastChange=GETDATE()
+		WHERE Id=?
+)");
+
+	editUser.bind(0, username.c_str());
+	editUser.bind(1, password.c_str());
+	editUser.bind(2, firstName.c_str());
+	editUser.bind(3, lastName.c_str());
+	editUser.bind(4, &this->id);
+	editUser.bind(5, &id);
+
+	nanodbc::execute(editUser);
+}
+
 void User::displayUserData()
 {
 	cout << endl;

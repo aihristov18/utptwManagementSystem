@@ -3,7 +3,7 @@
 #include "Menu.h"
 using namespace std;
 
-int main() /*try*/
+int main() try
 {
    bool isRunning = true;
     if (isRunning)
@@ -11,8 +11,7 @@ int main() /*try*/
         isRunning = runtime();
     }
 }
-//catch (std::exception& e)
-//{
-//    std::cerr << e.what() << std::endl;
-//    return EXIT_FAILURE;
-//}
+catch (exception& err)
+{
+    cerr << err.what() << endl;
+}
