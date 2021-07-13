@@ -67,8 +67,40 @@ void Team::createTeam(string title, User current)
 	nanodbc::execute(createTeam);
 }
 
-void Team::assignUsersToTeam(vector<int> userIds, int id)
+bool Team::validateUserIds(vector<int> userIds, int id)
 {
+	nanodbc::statement validateUserIds(conn);
+	nanodbc::prepare(validateUserIds, R"(
+		SELECT UserId
+		FROM UsersTeams
+		WHERE TeamId=?
+	)");
+
+	validateUserIds.bind(0, &id);
+	
+	auto result = nanodbc::execute(validateUserIds);
+
+	while (result.next())
+	{
+		for (size_t i = 0; i < userIds.size() - 1; i++)
+		{
+			if (userIds[i] == result.get<int>(0))
+			{
+				return false;
+			}
+		}
+	}
+
+	return true;
+}
+
+bool Team::assignUsersToTeam(vector<int> userIds, int id)
+{
+	if (!validateUserIds(userIds, id))
+	{
+		return false;
+	}
+
 	for (size_t i = 0; i < userIds.size() - 1; i++)
 	{
 		nanodbc::statement assignUser(conn);
@@ -83,6 +115,8 @@ void Team::assignUsersToTeam(vector<int> userIds, int id)
 
 		nanodbc::execute(assignUser);
 	}
+
+	return true;
 }
 
 void Team::deleteTeamById(int id)

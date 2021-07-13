@@ -63,7 +63,7 @@ void assignUsersMenu(User current)
 		int teamId;
 
 		cout << endl;
-		cout << "Teams you can assign people to: " << endl;
+		cout << "Teams you can assign users to: " << endl;
 
 		displayAllTeamsMenu(current);
 
@@ -102,10 +102,16 @@ void assignUsersMenu(User current)
 				userIds.push_back(num);
 			}
 
-			cout << endl;
-			cout << "Pushing to database .. ";
-
-			temp.assignUsersToTeam(userIds, teamId);
+			if (!temp.assignUsersToTeam(userIds, teamId))
+			{
+				cout << endl;
+				cout << "One of the users you entered is already assigned to this team." << endl;
+			}
+			else
+			{
+				cout << endl;
+				cout << "Pushing to database .. ";
+			}
 
 			Sleep(1000);
 			system("cls");

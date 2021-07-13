@@ -14,8 +14,9 @@ public:
 
 	void retrieveTeamById(int id);
 	void retrieveAssignedUsers();
+	bool validateUserIds(std::vector<int> userIds, int id);
 	void createTeam(std::string title, User current);
-	void assignUsersToTeam(std::vector<int> userIds, int id);
+	bool assignUsersToTeam(std::vector<int> userIds, int id);
 	void deleteTeamById(int id);
 	void editTeamById(int id, std::string title);
 	void displayTeamData();
