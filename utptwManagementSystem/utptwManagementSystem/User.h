@@ -13,6 +13,7 @@ public:
 	int getId();
 	std::string getUsername();
 	bool isAdministrator();
+	nanodbc::connection getConnection();
 	void retrieveUserById(int id);
 	void createUser(std::string _username, std::string _password, std::string _firstName, std::string _lastName);
 	void deleteUserById(int id);

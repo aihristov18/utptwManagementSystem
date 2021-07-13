@@ -21,6 +21,11 @@ bool User::isAdministrator()
 	return isAdmin;
 }
 
+nanodbc::connection User::getConnection()
+{
+	return conn;
+}
+
 void User::retrieveUserById(int id)
 {
 	nanodbc::statement retrieveUser(conn);
@@ -35,11 +40,21 @@ void User::retrieveUserById(int id)
 	result.next();
 	
 	this->id = id;
+
 	username = result.get<string>(0);
-	firstName = result.get<string>(1);
-	lastName = result.get<string>(2);
-	idOfCreator = result.get<int>(4);
-	idOfLastUserUpdate = result.get<int>(5);
+
+	if (result.is_null(1)) { firstName = ""; }
+	else { firstName = result.get<string>(1); }
+
+	if (result.is_null(2)) { lastName = ""; }
+	else { lastName = result.get<string>(2); }
+
+	if (result.is_null(4)) { idOfCreator = NULL; }
+	else { idOfCreator = result.get<int>(4); }
+
+	if (result.is_null(5)) { idOfLastUserUpdate = NULL; }
+	else { idOfLastUserUpdate = result.get<int>(5); }
+	
 	dateOfCreation = result.get<string>(6);
 	dateOfLastChange = result.get<string>(7);
 	
@@ -126,8 +141,6 @@ void User::displayAllUsers()
 	auto result = nanodbc::execute(conn, NANODBC_TEXT(query));
 	while (result.next())
 	{
-		User temp(conn);
-		temp.retrieveUserById(result.get<int>(0));
-		temp.displayUserData();
+		displayUserById(result.get<int>(0));
 	}
 }

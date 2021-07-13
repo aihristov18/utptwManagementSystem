@@ -144,6 +144,8 @@
   <ItemGroup>
     <ClCompile Include="Login.cpp" />
     <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="Team.cpp" />
+    <ClCompile Include="TeamPanel.cpp" />
     <ClCompile Include="User.cpp" />
     <ClCompile Include="UserPanel.cpp" />
     <ClCompile Include="utptwManagementSystem.cpp" />
@@ -151,6 +153,8 @@
   <ItemGroup>
     <ClInclude Include="Login.h" />
     <ClInclude Include="Menu.h" />
+    <ClInclude Include="Team.h" />
+    <ClInclude Include="TeamPanel.h" />
     <ClInclude Include="User.h" />
     <ClInclude Include="UserPanel.h" />
   </ItemGroup>

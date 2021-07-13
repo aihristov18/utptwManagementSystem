@@ -1,6 +1,6 @@
-#include <iostream>
 #include "UserPanel.h"
 #include "Login.h"
+#include <iostream>
 #include <exception>
 #include <Windows.h>
 using namespace std;
@@ -129,7 +129,7 @@ void userManagementMenu(User& current)
 				<< "3. Find user by id" << endl
 				<< "4. Create user" << endl
 				<< "5. Edit user" << endl
-				<< "6. Delete user by Id" << endl
+				<< "6. Delete user by id" << endl
 				<< endl
 				<< "Enter 0 to exit." << endl
 				<< endl;

@@ -4,7 +4,8 @@
 #include "Login.h"
 #include "User.h"
 #include "UserPanel.h"
-using namespace std;
+#include "TeamPanel.h"
+using namespace std; 
 
 bool runtime()
 {
@@ -51,6 +52,8 @@ bool runtime()
                 userManagementMenu(current);
                 break;
             case 2:
+                system("cls");
+                teamManagementMenu(current);
                 break;
             case 3:
                 break;

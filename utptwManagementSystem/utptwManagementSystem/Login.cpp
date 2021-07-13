@@ -27,7 +27,11 @@ bool validateUsernameAndPassword(nanodbc::connection conn, string username, stri
 int retrieveUserIdByPassword(nanodbc::connection conn, string password)
 {
     nanodbc::statement getPassword(conn);
-    nanodbc::prepare(getPassword, "SELECT Id FROM Users WHERE Password=?");
+    nanodbc::prepare(getPassword, R"(
+        SELECT Id
+        FROM Users
+        WHERE Password = ?
+    )");
     getPassword.bind(0, password.c_str());
 
     auto result = nanodbc::execute(getPassword);
